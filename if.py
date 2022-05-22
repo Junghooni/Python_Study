@@ -27,6 +27,7 @@ for i in [1,2,3,4,]:
 
 for i in range(1, 20):
     print(i)
-    
+
+# range(num1, num2, 간격)
 for i in range(1, 20, 2):
     print(i)
