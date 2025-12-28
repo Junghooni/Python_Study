@@ -1,0 +1,47 @@
+#198p 8.2.2 금융속보 크롤링
+
+import requests as rq
+from bs4 import BeautifulSoup
+
+
+#url에 해당 주소를 입력한다.
+url = 'https://finance.naver.com/news/news_list.naver?mode=LSS2D&section_id=101&section_id2=258'
+
+#get()함수를 이용해 해당 페이지의 내용을 받는다.
+data = rq.get(url)
+
+html = BeautifulSoup(data.content, 'html.parser')
+html_selct = html.select('dl > dd.articleSubject > a')
+
+#print(html_selct[0:3])
+"""
+[<a href="/news/news_read.naver?article_id=0004572136&amp;office_id=011&amp;mode=LSS2D&amp;type=0
+&amp;section_id=101&amp;section_id2=258&amp;section_id3=&amp;date=20251228&amp;page=1"
+title="복제약 출시 반년에도…'카나브' 매출 되레 뛰었다">복제약 출시 반년에도…'카나브' 매출 되레 뛰었다</a>,
+<a href="/news/news_read.naver?article_id=0005612759&amp;office_id=009&amp;mode=LSS2D&amp;
+type=0&amp;section_id=101&amp;section_id2=258&amp;section_id3=&amp;date=20251228&amp;page=1"
+title="올해 코스닥 새내기주, AI 등 첨단 비중 ‘쑥’...시총 1조 ‘역대 최다’">올해 코스닥 새내기주, AI 등 첨단 비중 ‘쑥’...시총 1조 ‘역대 최다’</a>,
+<a href="/news/news_read.naver?article_id=0003001750&amp;office_id=029&amp;mode=LSS2D&amp;type=0&amp;section_id=101&amp;
+section_id2=258&amp;section_id3=&amp;date=20251228&amp;page=1" title="코인 거래대금 86% 급감…‘그래도 수성’ 업비트 vs ‘속도 조절’ 빗썸">코인 거래대금
+86% 급감…‘그래도 수성’ 업비트 vs ‘속도 조절’ 빗썸</a>]
+"""
+# 출력된 내용을 살펴보면 제목은 title 속성에 위치하고 있다.
+
+# 속성값에 해당하는 내용을 추출했다.
+#print(html_selct[0]['title'])
+#복제약 출시 반년에도…'카나브' 매출 되레 뛰었다
+
+# 이제 for문으로 묶어 한번에 제목들을 추출한다.
+#print([i['title'] for i in html_selct])
+"""
+['코스닥에 온다던 산타…선물 열어본 투자자는 울상?',
+"복제약 출시 반년에도…'카나브' 매출 되레 뛰었다",
+'올해 코스닥 새내기주, AI 등 첨단 비중 ‘쑥’...시총 1조 ‘역대 최다’',
+'코인 거래대금 86% 급감…‘그래도 수성’ 업비트 vs ‘속도 조절’ 빗썸',
+"올해 코스닥 IPO, '양보다 질' 방점…공모부터 주가까지 활기", '공무원 그만두고 주식투자 대박…투자 포트폴리오는?',
+'[생활경제25]"요즘 누가 취하니"…주류업계의 고민', '고환율 부담? 정부 대책 효과?…3분의 1토막 난 서학개미 순매수',
+'회사채 한파에…CP 시장 단골손님된 CJ그룹 [시그널]', '개인투자자, 올해 금·은·달러에 몰렸다', '5대은행 올해 골드바·금통장 역대최대',
+'개인투자자, 올해 금·은·달러에 몰렸다', '돈보다 금', '돈보다 금', '5대은행 올해 골드바·금통장 역대최대',
+'돈보다 금', '5대은행 올해 골드바·금통장 역대최대', '사라진 비트코인…17억 가로챈 외국인 해커', '"살 만한 국내 주식 없는데…" 정부,
+서학개미 불만에 결국', '美주식 4거래일 연속 순매도한 서학개미…정책노력 힘 받나']
+"""
